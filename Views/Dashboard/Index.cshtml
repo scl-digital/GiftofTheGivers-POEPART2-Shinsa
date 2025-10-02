@@ -1,0 +1,197 @@
+@model DisasterAlleviationFoundation.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <!-- Welcome Section -->
+    <div class="dashboard-welcome">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-2">
+                    <i class="fas fa-tachometer-alt me-3"></i>
+                    Welcome back, @Model.CurrentUser.FirstName!
+                </h1>
+                <p class="mb-0 fs-5">
+                    Ready to make a difference in disaster-affected communities today?
+                </p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="text-white-50">
+                    <small>
+                        <i class="fas fa-calendar me-1"></i>
+                        @DateTime.Now.ToString("MMMM dd, yyyy")
+                    </small>
+                </div>
+                <div class="text-white-50">
+                    <small>
+                        <i class="fas fa-user-tag me-1"></i>
+                        @Model.CurrentUser.Role
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="stats-card">
+                <div class="stats-number">@Model.Stats.TotalVolunteers.ToString("N0")</div>
+                <div class="stats-label">
+                    <i class="fas fa-users me-1"></i>
+                    Active Volunteers
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stats-card">
+                <div class="stats-number">$@Model.Stats.TotalDonations.ToString("N0")</div>
+                <div class="stats-label">
+                    <i class="fas fa-heart me-1"></i>
+                    Total Donations
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stats-card">
+                <div class="stats-number">@Model.Stats.ActiveEmergencies</div>
+                <div class="stats-label">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    Active Emergencies
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stats-card">
+                <div class="stats-number">@Model.Stats.CommunitiesHelped</div>
+                <div class="stats-label">
+                    <i class="fas fa-home me-1"></i>
+                    Communities Helped
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission Statement -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <i class="fas fa-bullseye me-2 text-primary"></i>
+                        Our Mission
+                    </h4>
+                    <p class="card-text fs-6">
+                        Our mission is to provide immediate relief and long-term support to communities affected by natural disasters, 
+                        helping them rebuild and recover stronger than before. Together, we can make a lasting impact in the lives of those who need it most.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-hands-helping text-success"></i>
+                </div>
+                <h5>Volunteer</h5>
+                <p>Join our volunteer network and make a direct impact in disaster-affected communities.</p>
+                <form asp-action="Volunteer" method="post">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-hand-holding-heart me-2"></i>
+                        Become a Volunteer
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-donate text-primary"></i>
+                </div>
+                <h5>Donate</h5>
+                <p>Your financial support helps us provide essential supplies and services to those in need.</p>
+                <form asp-action="Donate" method="post">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-heart me-2"></i>
+                        Make a Donation
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-exclamation-triangle text-danger"></i>
+                </div>
+                <h5>Emergency Response</h5>
+                <p>Report emergencies and access real-time disaster response information and resources.</p>
+                <form asp-action="ReportEmergency" method="post">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-phone me-2"></i>
+                        Report Emergency
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clock me-2"></i>
+                        Recent Activity
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.RecentActivities.Any())
+                    {
+                        @foreach (var activity in Model.RecentActivities)
+                        {
+                            <div class="activity-item @activity.Type">
+                                <div class="d-flex align-items-start">
+                                    <div class="me-3">
+                                        <span class="fs-5">@activity.Icon</span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">@activity.Title</h6>
+                                        <p class="mb-1 text-muted">@activity.Description</p>
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock me-1"></i>
+                                            @activity.Timestamp.ToString("MMM dd, yyyy 'at' h:mm tt")
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 text-muted">
+                            <i class="fas fa-info-circle fs-1 mb-3"></i>
+                            <p>No recent activity to display.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
+    </script>
+}
