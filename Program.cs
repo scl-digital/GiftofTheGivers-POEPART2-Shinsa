@@ -1,6 +1,19 @@
 using DisasterAlleviationFoundation.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+// Create builder with custom options to fix WebRoot path
+var options = new WebApplicationOptions
+{
+    Args = args,
+    EnvironmentName = "Development",
+    WebRootPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName, "wwwroot")
+};
+
+var builder = WebApplication.CreateBuilder(options);
+
+// Debug: Log the paths being used
+Console.WriteLine($"Current Directory: {Directory.GetCurrentDirectory()}");
+Console.WriteLine($"WebRoot Path: {options.WebRootPath}");
+Console.WriteLine($"WebRoot Exists: {Directory.Exists(options.WebRootPath)}");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -21,7 +34,6 @@ builder.Services.AddHttpContextAccessor();
 // Register custom services
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IVolunteerService, VolunteerService>();
-builder.Services.AddScoped<IIncidentService, IncidentService>();
 builder.Services.AddScoped<IDonationService, DonationService>();
 
 var app = builder.Build();
@@ -35,7 +47,19 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
+// Configure static files with explicit options
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        // Ensure CSS files are served with correct content type
+        if (ctx.File.Name.EndsWith(".css"))
+        {
+            ctx.Context.Response.Headers.Append("Content-Type", "text/css");
+        }
+    }
+});
 
 app.UseRouting();
 

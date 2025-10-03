@@ -4,140 +4,87 @@
 }
 
 <div class="container-fluid py-4">
-    <!-- Welcome Section -->
-    <div class="dashboard-welcome">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h1 class="mb-2">
-                    <i class="fas fa-tachometer-alt me-3"></i>
-                    Welcome back, @Model.CurrentUser.FirstName!
-                </h1>
-                <p class="mb-0 fs-5">
-                    Ready to make a difference in disaster-affected communities today?
-                </p>
-            </div>
-            <div class="col-md-4 text-md-end">
-                <div class="text-white-50">
-                    <small>
-                        <i class="fas fa-calendar me-1"></i>
-                        @DateTime.Now.ToString("MMMM dd, yyyy")
-                    </small>
-                </div>
-                <div class="text-white-50">
-                    <small>
-                        <i class="fas fa-user-tag me-1"></i>
-                        @Model.CurrentUser.Role
-                    </small>
-                </div>
-            </div>
-        </div>
+    <style>
+        .cta-card {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 4%;
+            box-shadow: none;
+            padding: 24px;
+            height: 100%;
+            transition: none;
+        }
+        .cta-card:hover { box-shadow: none; transform: none; }
+        .cta-icon {
+            width: 56px; height: 56px;
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            background: #eeeeee; color: #000000;
+            box-shadow: none;
+            margin-bottom: 12px;
+            font-size: 22px;
+        }
+        .cta-title { font-weight: 700; letter-spacing: .2px; }
+        .cta-text { color: #4d4d4d; }
+        .cta-actions .btn { border-radius: 4%; padding: 10px 14px; }
+    </style>
+
+    <div class="d-flex justify-content-end mb-3">
+        <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+            <button type="submit" class="btn btn-sm">
+                <i class="fas fa-sign-out-alt me-1"></i>Logout
+            </button>
+        </form>
     </div>
 
-    <!-- Statistics Cards -->
-    <div class="row mb-4">
-        <div class="col-md-3 mb-3">
-            <div class="stats-card">
-                <div class="stats-number">@Model.Stats.TotalVolunteers.ToString("N0")</div>
-                <div class="stats-label">
-                    <i class="fas fa-users me-1"></i>
-                    Active Volunteers
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="cta-card text-start h-100">
+                <div class="cta-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <h5 class="cta-title mb-2">Volunteer</h5>
+                <p class="cta-text mb-3">Join our volunteer network and make a direct impact in disaster-affected communities.</p>
+                <div class="cta-actions">
+                    <form asp-action="Volunteer" method="post">
+                        <button type="submit" class="btn">
+                            <i class="fas fa-hand-holding-heart me-2"></i>
+                            Become a Volunteer
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="stats-card">
-                <div class="stats-number">$@Model.Stats.TotalDonations.ToString("N0")</div>
-                <div class="stats-label">
-                    <i class="fas fa-heart me-1"></i>
-                    Total Donations
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="stats-card">
-                <div class="stats-number">@Model.Stats.ActiveEmergencies</div>
-                <div class="stats-label">
-                    <i class="fas fa-exclamation-triangle me-1"></i>
-                    Active Emergencies
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="stats-card">
-                <div class="stats-number">@Model.Stats.CommunitiesHelped</div>
-                <div class="stats-label">
-                    <i class="fas fa-home me-1"></i>
-                    Communities Helped
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Mission Statement -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <i class="fas fa-bullseye me-2 text-primary"></i>
-                        Our Mission
-                    </h4>
-                    <p class="card-text fs-6">
-                        Our mission is to provide immediate relief and long-term support to communities affected by natural disasters, 
-                        helping them rebuild and recover stronger than before. Together, we can make a lasting impact in the lives of those who need it most.
-                    </p>
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="cta-card text-start h-100">
+                <div class="cta-icon">
+                    <i class="fas fa-donate"></i>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Action Cards -->
-    <div class="row mb-4">
-        <div class="col-md-4 mb-3">
-            <div class="action-card">
-                <div class="action-icon">
-                    <i class="fas fa-hands-helping text-success"></i>
-                </div>
-                <h5>Volunteer</h5>
-                <p>Join our volunteer network and make a direct impact in disaster-affected communities.</p>
-                <form asp-action="Volunteer" method="post">
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-hand-holding-heart me-2"></i>
-                        Become a Volunteer
-                    </button>
-                </form>
-            </div>
-        </div>
-        
-        <div class="col-md-4 mb-3">
-            <div class="action-card">
-                <div class="action-icon">
-                    <i class="fas fa-donate text-primary"></i>
-                </div>
-                <h5>Donate</h5>
-                <p>Your financial support helps us provide essential supplies and services to those in need.</p>
-                <form asp-action="Donate" method="post">
-                    <button type="submit" class="btn btn-primary">
+                <h5 class="cta-title mb-2">Donate</h5>
+                <p class="cta-text mb-3">Your support provides food, clothing, and medical supplies to affected areas.</p>
+                <div class="cta-actions">
+                    <a asp-controller="Donation" asp-action="Donate" class="btn">
                         <i class="fas fa-heart me-2"></i>
                         Make a Donation
-                    </button>
-                </form>
+                    </a>
+                </div>
             </div>
         </div>
-        
-        <div class="col-md-4 mb-3">
-            <div class="action-card">
-                <div class="action-icon">
-                    <i class="fas fa-exclamation-triangle text-danger"></i>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="cta-card text-start h-100">
+                <div class="cta-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
                 </div>
-                <h5>Emergency Response</h5>
-                <p>Report emergencies and access real-time disaster response information and resources.</p>
-                <form asp-action="ReportEmergency" method="post">
-                    <button type="submit" class="btn btn-danger">
+                <h5 class="cta-title mb-2">Emergency Response</h5>
+                <p class="cta-text mb-3">Report emergencies and access real-time disaster response information and resources.</p>
+                <div class="cta-actions">
+                    <a asp-controller="Emergency" asp-action="Report" class="btn">
                         <i class="fas fa-phone me-2"></i>
                         Report Emergency
-                    </button>
-                </form>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

@@ -687,14 +687,16 @@ namespace DisasterAlleviationFoundation.Services
         public async Task<bool> SendDistributionNotificationAsync(int distributionId) => true;
         public async Task<bool> NotifyDonorOfDistributionAsync(int donationId, int distributionId) => true;
         public async Task<bool> CanUserEditDonationAsync(int donationId, int userId) => true;
-        public async Task<bool> CanUserDeleteDonationAsync(int donationId, int userId) => true;
-        public async Task<List<string>> ValidateDonationAsync(Donation donation) => new();
-        public async Task<bool> IsResourceAvailableAsync(int resourceId, int requestedQuantity) => true;
-        public async Task<string> ExportDonationsAsync(DateTime? fromDate = null, DateTime? toDate = null) => "CSV data";
-        public async Task<bool> ImportDonationsAsync(string csvData) => true;
-        public async Task<bool> SchedulePickupAsync(int donationId, DateTime pickupDate) => true;
-        public async Task<bool> UpdateDeliveryStatusAsync(int donationId, string status, string location) => true;
-        public async Task<List<Donation>> GetDonationsRequiringPickupAsync() => new();
+
+        // Missing interface members (simple stubs)
+        public Task<bool> CanUserDeleteDonationAsync(int donationId, int userId) => Task.FromResult(true);
+        public Task<List<string>> ValidateDonationAsync(Donation donation) => Task.FromResult(new List<string>());
+        public Task<bool> IsResourceAvailableAsync(int resourceId, int requestedQuantity) => Task.FromResult(true);
+        public Task<string> ExportDonationsAsync(DateTime? fromDate = null, DateTime? toDate = null) => Task.FromResult("CSV data");
+        public Task<bool> ImportDonationsAsync(string csvData) => Task.FromResult(true);
+        public Task<bool> SchedulePickupAsync(int donationId, DateTime pickupDate) => Task.FromResult(true);
+        public Task<bool> UpdateDeliveryStatusAsync(int donationId, string status, string location) => Task.FromResult(true);
+        public Task<List<Donation>> GetDonationsRequiringPickupAsync() => Task.FromResult(new List<Donation>());
 
         private void InitializeSampleData()
         {
@@ -808,5 +810,6 @@ namespace DisasterAlleviationFoundation.Services
 
             _resourceDonations.AddRange(sampleResources);
         }
+
     }
 }

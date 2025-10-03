@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 1,
+    "FirstName": "Demo",
+    "LastName": "User",
+    "Email": "demo@daf.org",
+    "PasswordHash": "dFeQjVqBDhY\u002BTFEJPBetMAb67vXNkYvPlb3fk3EzI4POSpcVmHTBkA0AWcFdz\u002BoQp8seYwQyz4ZwsxyEM5I2cg==",
+    "CreatedAt": "2025-09-26T17:05:42.7490706Z",
+    "LastLoginAt": "2025-10-03T17:05:54.1566036Z",
+    "IsActive": true,
+    "Role": "User",
+    "FullName": "Demo User"
+  },
+  {
+    "Id": 2,
+    "FirstName": "Shinsa",
+    "LastName": "Lomboto",
+    "Email": "shinsalomboto45@gmail.com",
+    "PasswordHash": "8N0QLPcP0fVOR8ThZ1Z8rZjsYMSDkAz533\u002BsNc4f15dnFEORk7dXS6W7D7NtLVnAu6yEdfci1msgEd8hdC5qXw==",
+    "CreatedAt": "2025-10-03T17:06:23.876133Z",
+    "LastLoginAt": null,
+    "IsActive": true,
+    "Role": "User",
+    "FullName": "Shinsa Lomboto"
+  }
+]

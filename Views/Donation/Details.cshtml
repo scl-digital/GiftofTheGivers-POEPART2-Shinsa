@@ -1,0 +1,143 @@
+@model DisasterAlleviationFoundation.Models.Donation
+@{
+    ViewData["Title"] = $"Donation #{Model.Id}";
+    var resources = ViewBag.Resources as List<DisasterAlleviationFoundation.Models.ResourceDonation>;
+    var tracking = ViewBag.Tracking as List<DisasterAlleviationFoundation.Models.DonationTracking>;
+    var distributions = ViewBag.Distributions as List<DisasterAlleviationFoundation.Models.DonationDistribution>;
+}
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>
+            <i class="fas fa-gift me-2"></i>Donation #@Model.Id
+        </h2>
+        <a asp-controller="Donation" asp-action="Donate" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>New Donation
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>Donation Summary</strong>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Type:</strong> @Model.Type</p>
+                            <p><strong>Status:</strong> <span class="badge bg-info">@Model.Status</span></p>
+                            <p><strong>Date:</strong> @Model.DonationDate.ToString("MMM dd, yyyy HH:mm")</p>
+                        </div>
+                        <div class="col-md-6">
+                            @if (Model.Amount.HasValue)
+                            {
+                                <p><strong>Amount:</strong> $@Model.Amount.Value.ToString("N2")</p>
+                                <p><strong>Payment:</strong> @Model.PaymentMethod</p>
+                                <p><strong>Receipt Required:</strong> @(Model.ReceiptRequired ? "Yes" : "No")</p>
+                            }
+                        </div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.SpecialInstructions))
+                    {
+                        <p class="mb-0"><strong>Notes:</strong> @Model.SpecialInstructions</p>
+                    }
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>Tracking</strong>
+                </div>
+                <div class="card-body">
+                    @if (tracking != null && tracking.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var t in tracking.OrderByDescending(t => t.StatusDate))
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>@t.Status</strong>
+                                        <div class="text-muted small">@t.Notes</div>
+                                    </div>
+                                    <span class="text-muted small">@t.StatusDate.ToString("MMM dd, HH:mm")</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="text-muted">No tracking updates yet.</div>
+                    }
+                </div>
+            </div>
+
+            @if (distributions != null && distributions.Any())
+            {
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <strong>Distributions</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Location</th>
+                                        <th>Recipients</th>
+                                        <th>Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var d in distributions.OrderByDescending(d => d.DistributionDate))
+                                    {
+                                        <tr>
+                                            <td>@d.DistributionDate.ToString("MMM dd, yyyy")</td>
+                                            <td>@d.DistributionLocation</td>
+                                            <td>@d.NumberOfRecipients</td>
+                                            <td>@d.Notes</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-lg-4">
+            @if (resources != null)
+            {
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <strong>Resource Items</strong>
+                    </div>
+                    <div class="card-body">
+                        @if (resources.Any())
+                        {
+                            <ul class="list-group">
+                                @foreach (var r in resources)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="fw-bold">@r.ItemName</div>
+                                            <small class="text-muted">@r.Category • @r.Quantity @r.UnitOfMeasure</small>
+                                        </div>
+                                        <span class="badge bg-secondary">@r.Status</span>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <div class="text-muted">No resource items.</div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

@@ -1,25 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "/Users/user1/Documents/DisasterAlleviationFoundation/DisasterAlleviationFoundation.csproj": {}
+    "C:\\Users\\sclda\\source\\repos\\GiftofTheGivers-POEPART2-Shinsa\\DisasterAlleviationFoundation.csproj": {}
   },
   "projects": {
-    "/Users/user1/Documents/DisasterAlleviationFoundation/DisasterAlleviationFoundation.csproj": {
+    "C:\\Users\\sclda\\source\\repos\\GiftofTheGivers-POEPART2-Shinsa\\DisasterAlleviationFoundation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/user1/Documents/DisasterAlleviationFoundation/DisasterAlleviationFoundation.csproj",
+        "projectUniqueName": "C:\\Users\\sclda\\source\\repos\\GiftofTheGivers-POEPART2-Shinsa\\DisasterAlleviationFoundation.csproj",
         "projectName": "DisasterAlleviationFoundation",
-        "projectPath": "/Users/user1/Documents/DisasterAlleviationFoundation/DisasterAlleviationFoundation.csproj",
-        "packagesPath": "/Users/user1/.nuget/packages/",
-        "outputPath": "/Users/user1/Documents/DisasterAlleviationFoundation/obj/",
+        "projectPath": "C:\\Users\\sclda\\source\\repos\\GiftofTheGivers-POEPART2-Shinsa\\DisasterAlleviationFoundation.csproj",
+        "packagesPath": "C:\\Users\\sclda\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sclda\\source\\repos\\GiftofTheGivers-POEPART2-Shinsa\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/user1/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\sclda\\source\\repos\\GiftofTheGivers-POEPART2-Shinsa\\NuGet.Config",
+          "C:\\Users\\sclda\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,7 +42,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -61,7 +67,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/user1/.dotnet/sdk/8.0.414/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

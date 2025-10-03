@@ -1,0 +1,92 @@
+@model DisasterAlleviationFoundation.Models.VolunteerRegistrationViewModel
+
+@{
+    ViewData["Title"] = "Volunteer Registration";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h2 class="mb-0">
+                        <i class="fas fa-hands-helping me-2"></i>
+                        Volunteer Registration
+                    </h2>
+                    <p class="mb-0 mt-2">Join our volunteer network and help impacted communities.</p>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Register" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="PhoneNumber" class="form-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="e.g., 555-123-4567" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="EmergencyContactPhone" class="form-label"></label>
+                                <input asp-for="EmergencyContactPhone" class="form-control" placeholder="e.g., 555-987-6543" />
+                                <span asp-validation-for="EmergencyContactPhone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <label asp-for="EmergencyContact" class="form-label"></label>
+                            <input asp-for="EmergencyContact" class="form-control" placeholder="Full name" />
+                            <span asp-validation-for="EmergencyContact" class="text-danger"></span>
+                        </div>
+
+                        <div class="mt-3">
+                            <label asp-for="Skills" class="form-label"></label>
+                            <input asp-for="Skills" class="form-control" placeholder="e.g., First aid, logistics, cooking" />
+                            <span asp-validation-for="Skills" class="text-danger"></span>
+                        </div>
+
+                        <div class="mt-3">
+                            <label asp-for="Availability" class="form-label"></label>
+                            <input asp-for="Availability" class="form-control" placeholder="Weekdays, weekends, evenings" />
+                            <span asp-validation-for="Availability" class="text-danger"></span>
+                        </div>
+
+                        <div class="row g-3 mt-1">
+                            <div class="col-md-6">
+                                <label asp-for="Languages" class="form-label"></label>
+                                <input asp-for="Languages" class="form-control" placeholder="e.g., English, Zulu" />
+                                <span asp-validation-for="Languages" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="PreviousExperience" class="form-label"></label>
+                                <input asp-for="PreviousExperience" class="form-control" placeholder="Brief summary" />
+                                <span asp-validation-for="PreviousExperience" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-check mt-3">
+                            <input class="form-check-input" type="checkbox" asp-for="HasTransportation" />
+                            <label class="form-check-label" asp-for="HasTransportation"></label>
+                        </div>
+                        <div class="form-check mt-2 mb-4">
+                            <input class="form-check-input" type="checkbox" asp-for="HasMedicalTraining" />
+                            <label class="form-check-label" asp-for="HasMedicalTraining"></label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="Volunteer" asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check me-2"></i>Submit Registration
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

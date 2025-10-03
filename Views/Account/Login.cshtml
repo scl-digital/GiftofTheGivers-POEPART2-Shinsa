@@ -8,13 +8,21 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Disaster Alleviation Foundation</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
+    <div class="container py-2">
+        <div class="d-flex justify-content-end">
+            <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                <button type="submit" class="btn btn-sm btn-outline-dark">
+                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                </button>
+            </form>
+        </div>
+    </div>
     <div class="auth-container">
         <div class="container">
             <div class="row justify-content-center">
@@ -60,14 +68,14 @@
                                 </div>
 
                                 <div class="d-grid mb-3">
-                                    <button type="submit" class="btn btn-primary btn-lg">
+                                    <button type="submit" class="btn btn-lg">
                                         <i class="fas fa-sign-in-alt me-2"></i>Sign In
                                     </button>
                                 </div>
 
                                 <div class="text-center">
                                     <p class="mb-2">Don't have an account?</p>
-                                    <a asp-action="Register" class="btn btn-outline-primary">
+                                    <a asp-action="Register" class="btn btn-outline-dark">
                                         <i class="fas fa-user-plus me-2"></i>Create Account
                                     </a>
                                 </div>
@@ -77,9 +85,8 @@
                             
                             <div class="text-center">
                                 <small class="text-muted">
-                                    <strong>Demo Accounts:</strong><br>
-                                    Admin: admin@daf.org / admin123<br>
-                                    Volunteer: volunteer@daf.org / volunteer123
+                                    <strong>Demo Account:</strong><br>
+                                    User: demo@daf.org / demo123
                                 </small>
                             </div>
                         </div>

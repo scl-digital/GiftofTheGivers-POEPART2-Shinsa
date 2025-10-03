@@ -31,8 +31,5 @@ namespace DisasterAlleviationFoundation.Models
         [Display(Name = "Confirm Password")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; } = string.Empty;
-        
-        [Display(Name = "Role")]
-        public string Role { get; set; } = "User";
     }
 }

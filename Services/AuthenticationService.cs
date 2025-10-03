@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Text.Json;
 using DisasterAlleviationFoundation.Models;
 
 namespace DisasterAlleviationFoundation.Services
@@ -7,13 +8,29 @@ namespace DisasterAlleviationFoundation.Services
     {
         private readonly List<User> _users = new();
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly string _dataDirectory;
+        private readonly string _usersFilePath;
         
         public AuthenticationService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
-            
-            // Initialize with some sample data for demonstration
-            InitializeSampleData();
+            // Set data directory (local to app)
+            _dataDirectory = Path.Combine(AppContext.BaseDirectory, "App_Data");
+            _usersFilePath = Path.Combine(_dataDirectory, "users.json");
+
+            // Ensure data dir exists
+            if (!Directory.Exists(_dataDirectory))
+            {
+                Directory.CreateDirectory(_dataDirectory);
+            }
+
+            // Load existing users from disk; if none, seed demo and save
+            LoadUsers();
+            if (_users.Count == 0)
+            {
+                InitializeSampleData();
+                SaveUsers();
+            }
         }
         
         public bool IsAuthenticated => GetCurrentUser() != null;
@@ -56,6 +73,9 @@ namespace DisasterAlleviationFoundation.Services
                 _httpContextAccessor.HttpContext?.Session.SetString("UserEmail", user.Email);
                 _httpContextAccessor.HttpContext?.Session.SetString("UserName", user.FullName);
                 
+                // Persist last login update (optional)
+                SaveUsers();
+
                 return AuthenticationResult.Success(user);
             }
             catch (Exception ex)
@@ -72,7 +92,7 @@ namespace DisasterAlleviationFoundation.Services
                 {
                     return AuthenticationResult.Failure("Email already exists");
                 }
-                
+
                 var user = new User
                 {
                     Id = _users.Count > 0 ? _users.Max(u => u.Id) + 1 : 1,
@@ -80,18 +100,21 @@ namespace DisasterAlleviationFoundation.Services
                     LastName = request.LastName,
                     Email = request.Email,
                     PasswordHash = HashPassword(request.Password),
-                    Role = request.Role,
+                    Role = "User",
                     CreatedAt = DateTime.UtcNow,
                     IsActive = true
                 };
-                
+
                 _users.Add(user);
-                
+
                 // Set session
                 _httpContextAccessor.HttpContext?.Session.SetInt32("UserId", user.Id);
                 _httpContextAccessor.HttpContext?.Session.SetString("UserEmail", user.Email);
                 _httpContextAccessor.HttpContext?.Session.SetString("UserName", user.FullName);
-                
+
+                // Persist to disk
+                SaveUsers();
+
                 return AuthenticationResult.Success(user);
             }
             catch (Exception ex)
@@ -100,70 +123,36 @@ namespace DisasterAlleviationFoundation.Services
             }
         }
 
-        public async Task<bool> ValidateUserAsync(string email, string password)
-        {
-            var user = _users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
-            return user != null && VerifyPassword(password, user.PasswordHash);
-        }
-
-        public async Task<User?> GetUserByEmailAsync(string email)
-        {
-            return _users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public async Task<User?> GetUserByIdAsync(int id)
-        {
-            return _users.FirstOrDefault(u => u.Id == id);
-        }
-
-        public async Task<List<User>> GetAllUsersAsync()
-        {
-            return _users.ToList();
-        }
-
         private void InitializeSampleData()
         {
-            // Add a sample admin user for testing
-            var adminUser = new User
+            // Single demo user for testing
+            var demoUser = new User
             {
                 Id = 1,
-                FirstName = "Admin",
+                FirstName = "Demo",
                 LastName = "User",
-                Email = "admin@daf.org",
-                PasswordHash = HashPassword("admin123"),
-                Role = "Admin",
-                CreatedAt = DateTime.UtcNow.AddDays(-30),
+                Email = "demo@daf.org",
+                PasswordHash = HashPassword("demo123"),
+                Role = "User",
+                CreatedAt = DateTime.UtcNow.AddDays(-7),
                 IsActive = true
             };
-            
-            var volunteerUser = new User
-            {
-                Id = 2,
-                FirstName = "John",
-                LastName = "Volunteer",
-                Email = "volunteer@daf.org",
-                PasswordHash = HashPassword("volunteer123"),
-                Role = "Volunteer",
-                CreatedAt = DateTime.UtcNow.AddDays(-15),
-                IsActive = true
-            };
-            
-            _users.AddRange(new[] { adminUser, volunteerUser });
-        }
 
+            _users.Add(demoUser);
+        }
         private string HashPassword(string password)
         {
             using var rng = RandomNumberGenerator.Create();
             var salt = new byte[32];
             rng.GetBytes(salt);
-            
+
             using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000, HashAlgorithmName.SHA256);
             var hash = pbkdf2.GetBytes(32);
-            
+
             var hashBytes = new byte[64];
             Array.Copy(salt, 0, hashBytes, 0, 32);
             Array.Copy(hash, 0, hashBytes, 32, 32);
-            
+
             return Convert.ToBase64String(hashBytes);
         }
 
@@ -190,6 +179,63 @@ namespace DisasterAlleviationFoundation.Services
             {
                 return false;
             }
+        }
+
+        // Persistence helpers
+        private void LoadUsers()
+        {
+            try
+            {
+                if (File.Exists(_usersFilePath))
+                {
+                    var json = File.ReadAllText(_usersFilePath);
+                    var users = JsonSerializer.Deserialize<List<User>>(json);
+                    if (users != null)
+                    {
+                        _users.Clear();
+                        _users.AddRange(users);
+                    }
+                }
+            }
+            catch
+            {
+                // Ignore read errors; start with an empty list
+            }
+        }
+
+        private void SaveUsers()
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(_users, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(_usersFilePath, json);
+            }
+            catch
+            {
+                // Ignore write errors to avoid breaking the app flow
+            }
+        }
+
+        // Interface implementations
+        public async Task<bool> ValidateUserAsync(string email, string password)
+        {
+            var user = _users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            return user != null && VerifyPassword(password, user.PasswordHash);
+        }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return _users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public async Task<User?> GetUserByIdAsync(int id)
+        {
+            return _users.FirstOrDefault(u => u.Id == id);
+        }
+
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            return _users.ToList();
         }
     }
 }

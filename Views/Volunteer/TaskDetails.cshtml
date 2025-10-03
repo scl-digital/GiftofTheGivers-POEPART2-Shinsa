@@ -1,0 +1,30 @@
+@model DisasterAlleviationFoundation.Models.VolunteerTask
+@{
+    ViewData["Title"] = "Task Details";
+}
+<div class="container mt-4">
+    <a asp-action="Tasks" class="btn btn-link">&laquo; Back to tasks</a>
+
+    <div class="card">
+        <div class="card-body">
+            <h3>@Model.Title</h3>
+            <p>@Model.Description</p>
+            <p><strong>Location:</strong> @Model.Location</p>
+            <p><strong>Required Skills:</strong> @Model.RequiredSkills</p>
+            <p><strong>Dates:</strong> @Model.StartDate:d - @Model.EndDate:d</p>
+            <p><strong>Status:</strong> @Model.Status</p>
+
+            @if (ViewBag.CanApply == true)
+            {
+                <form asp-action="ApplyForTask" method="post">
+                    <input type="hidden" name="taskId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-success">Apply for this task</button>
+                </form>
+            }
+            else
+            {
+                <div class="alert alert-secondary mt-2">You cannot apply for this task.</div>
+            }
+        </div>
+    </div>
+</div>

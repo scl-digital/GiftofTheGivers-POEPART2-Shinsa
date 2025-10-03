@@ -1,0 +1,42 @@
+@model IEnumerable<DisasterAlleviationFoundation.Models.VolunteerTaskAssignment>
+@{
+    ViewData["Title"] = "My Tasks";
+}
+<div class="container mt-4">
+    <h2>My Tasks</h2>
+
+    @if (Model?.Any() == true)
+    {
+        <div class="list-group">
+            @foreach (var a in Model)
+            {
+                <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@a.Task?.Title</h5>
+                        <small>Status: @a.Status</small>
+                    </div>
+                    <p class="mb-1">@a.Task?.Description</p>
+                    <div class="mt-2">
+                        @if (a.Status == DisasterAlleviationFoundation.Models.AssignmentStatus.Assigned)
+                        {
+                            <form asp-action="AcceptTask" method="post" class="d-inline">
+                                <input type="hidden" name="assignmentId" value="@a.Id" />
+                                <button type="submit" class="btn btn-sm btn-success">Accept</button>
+                            </form>
+                            <form asp-action="DeclineTask" method="post" class="d-inline ms-1">
+                                <input type="hidden" name="assignmentId" value="@a.Id" />
+                                <input type="hidden" name="reason" value="No reason provided" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Decline</button>
+                            </form>
+                        }
+                        <a asp-action="CompleteTask" asp-route-assignmentId="@a.Id" class="btn btn-sm btn-primary ms-1">Complete</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">You have no tasks assigned.</div>
+    }
+</div>

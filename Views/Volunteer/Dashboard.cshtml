@@ -1,0 +1,40 @@
+@model DisasterAlleviationFoundation.Models.VolunteerDashboardViewModel
+@{
+    ViewData["Title"] = "Volunteer Dashboard";
+}
+<div class="container mt-4">
+    <h2 class="mb-3">Volunteer Dashboard</h2>
+    <div class="alert alert-success" role="alert" asp-validation-summary="ModelOnly"></div>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Profile</h5>
+                    <p class="mb-1"><strong>Name:</strong> @Model.Profile.User?.FullName</p>
+                    <p class="mb-1"><strong>Status:</strong> @Model.Profile.Status</p>
+                    <a asp-action="Profile" class="btn btn-outline-primary btn-sm mt-2">View Profile</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Stats</h5>
+                    <div class="row">
+                        <div class="col-6">Total Hours: <strong>@Model.Stats.TotalHoursWorked</strong></div>
+                        <div class="col-6">Tasks Completed: <strong>@Model.Stats.TasksCompleted</strong></div>
+                        <div class="col-6">Active Tasks: <strong>@Model.Stats.ActiveTasks</strong></div>
+                        <div class="col-6">Avg Rating: <strong>@Model.Stats.AverageRating</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Tasks" class="btn btn-success">Find Tasks</a>
+        <a asp-action="MyTasks" class="btn btn-primary">My Tasks</a>
+        <a asp-action="Statistics" class="btn btn-outline-secondary">Statistics</a>
+    </div>
+</div>

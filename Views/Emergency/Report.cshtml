@@ -1,0 +1,62 @@
+@model DisasterAlleviationFoundation.Models.EmergencyReportViewModel
+@{
+    ViewData["Title"] = "Emergency Response";
+}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Emergency Response</h4>
+                    <small>Please provide details so we can coordinate a response.</small>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Report" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="ReporterName" class="form-label"></label>
+                                <input asp-for="ReporterName" class="form-control" placeholder="Your full name" />
+                                <span asp-validation-for="ReporterName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Phone" class="form-label"></label>
+                                <input asp-for="Phone" class="form-control" placeholder="Contact number" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <label asp-for="Location" class="form-label"></label>
+                            <input asp-for="Location" class="form-control" placeholder="Address, area, or GPS coordinates" />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+
+                        <div class="mt-3">
+                            <label asp-for="Urgency" class="form-label"></label>
+                            <select asp-for="Urgency" class="form-select" asp-items="Html.GetEnumSelectList<DisasterAlleviationFoundation.Models.EmergencyUrgency>()"></select>
+                        </div>
+
+                        <div class="mt-3">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" rows="5" class="form-control" placeholder="Describe the situation, number of people impacted, immediate needs, etc."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Report
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

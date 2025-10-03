@@ -1,0 +1,50 @@
+@model DisasterAlleviationFoundation.Models.TaskSearchViewModel
+@{
+    ViewData["Title"] = "Available Tasks";
+}
+<div class="container mt-4">
+    <h2>Available Tasks</h2>
+
+    <form method="get" class="row g-2 mb-3">
+        <div class="col-md-4">
+            <input asp-for="SearchTerm" class="form-control" placeholder="Search..." />
+        </div>
+        <div class="col-md-2">
+            <select asp-for="Category" class="form-select" asp-items="Html.GetEnumSelectList<DisasterAlleviationFoundation.Models.TaskCategory>()">
+                <option value="">All Categories</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select asp-for="Priority" class="form-select" asp-items="Html.GetEnumSelectList<DisasterAlleviationFoundation.Models.TaskPriority>()">
+                <option value="">Any Priority</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input asp-for="Location" class="form-control" placeholder="Location" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+    </form>
+
+    <div class="list-group">
+        @if (Model.Tasks?.Any() == true)
+        {
+            foreach (var task in Model.Tasks)
+            {
+                <a asp-action="TaskDetails" asp-route-id="@task.Id" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@task.Title</h5>
+                        <small>@task.Location</small>
+                    </div>
+                    <p class="mb-1">@task.Description</p>
+                    <small>Category: @task.Category | Priority: @task.Priority</small>
+                </a>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info">No tasks found.</div>
+        }
+    </div>
+</div>

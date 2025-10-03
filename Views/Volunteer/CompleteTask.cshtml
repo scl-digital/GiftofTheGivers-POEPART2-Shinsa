@@ -1,0 +1,25 @@
+@model DisasterAlleviationFoundation.Models.VolunteerTaskAssignment
+@{
+    ViewData["Title"] = "Complete Task";
+}
+<div class="container mt-4">
+    <h2>Complete Task</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5>@Model.Task?.Title</h5>
+            <p>@Model.Task?.Description</p>
+            <form asp-action="CompleteTask" method="post">
+                <input type="hidden" name="assignmentId" value="@Model.Id" />
+                <div class="mb-3">
+                    <label class="form-label" for="hoursWorked">Hours Worked</label>
+                    <input type="number" step="0.1" class="form-control" id="hoursWorked" name="hoursWorked" value="@Model.HoursWorked" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="notes">Notes</label>
+                    <textarea class="form-control" id="notes" name="notes"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
